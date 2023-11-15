@@ -1,0 +1,34 @@
+diff -up openchange-openchange-2.3-VULCAN/libmapiadmin/libmapiadmin.h.samba-4.12 openchange-openchange-2.3-VULCAN/libmapiadmin/libmapiadmin.h
+--- openchange-openchange-2.3-VULCAN/libmapiadmin/libmapiadmin.h.samba-4.12	2020-01-27 11:33:02.941846935 +0100
++++ openchange-openchange-2.3-VULCAN/libmapiadmin/libmapiadmin.h	2020-01-27 11:33:19.170846710 +0100
+@@ -103,7 +103,9 @@ __BEGIN_DECLS
+ struct ldb_dn *samdb_search_dn(struct ldb_context *, TALLOC_CTX *, struct ldb_dn *, const char *, ...) _PRINTF_ATTRIBUTE(4,5);
+ struct dom_sid *dom_sid_add_rid(TALLOC_CTX *, const struct dom_sid *, uint32_t);
+ bool encode_pw_buffer(uint8_t buffer[516], const char *, int);
++#if 0 /* removed in samba 4.12 */
+ void arcfour_crypt_blob(uint8_t *, int, const DATA_BLOB *);
++#endif
+ 
+ /* The following public definitions come from libmapiadmin/mapiadmin.c */
+ struct mapiadmin_ctx *mapiadmin_init(struct mapi_session *);
+diff -up openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c.samba-4.12 openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c
+--- openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c.samba-4.12	2020-01-27 11:25:31.398853179 +0100
++++ openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c	2020-01-27 11:31:27.490848255 +0100
+@@ -592,6 +592,9 @@ _PUBLIC_ enum MAPISTATUS mapiadmin_user_
+  */
+ _PUBLIC_ enum MAPISTATUS mapiadmin_user_add(struct mapiadmin_ctx *mapiadmin_ctx)
+ {
++	OC_DEBUG(3, "mapiadmin_user_add(): is disabled");
++	return MAPI_E_UNABLE_TO_COMPLETE;
++#if 0 /* disable it, use samba function directly, if needed (no 'arcfour_crypt_blob' in samba 4.12) */
+ 	TALLOC_CTX			*mem_ctx;
+ 	NTSTATUS			status;
+ 	enum MAPISTATUS			retval;
+@@ -732,6 +735,7 @@ again:
+ 
+ 	talloc_free(mem_ctx);
+ 	return MAPI_E_SUCCESS;
++#endif
+ }
+ 
+ /**

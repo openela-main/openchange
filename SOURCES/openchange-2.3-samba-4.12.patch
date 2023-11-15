@@ -1,0 +1,51 @@
+diff -up openchange-openchange-2.3-VULCAN/ndr_mapi.c.samba-4.12 openchange-openchange-2.3-VULCAN/ndr_mapi.c
+--- openchange-openchange-2.3-VULCAN/ndr_mapi.c.samba-4.12	2020-01-27 11:04:07.136870938 +0100
++++ openchange-openchange-2.3-VULCAN/ndr_mapi.c	2020-01-27 11:12:29.978863985 +0100
+@@ -2151,7 +2151,11 @@ enum ndr_err_code ndr_push_RestrictionVa
+ 		uint32_t _flags_save_STRUCT = ndr->flags;
+ 		ndr_set_flags(&ndr->flags, LIBNDR_FLAG_NOALIGN);
+ 		if (ndr_flags & NDR_SCALARS) {
+-			int level = ndr_push_get_switch_value(ndr, r);
++			uint32_t level = 0;
++
++			if (!NDR_ERR_CODE_IS_SUCCESS(ndr_push_steal_switch_value(ndr, r, &level)))
++				level = 0;
++
+ 			switch (level) {
+ 				case 0x0: {
+ 					break; }
+@@ -2165,7 +2169,9 @@ enum ndr_err_code ndr_push_RestrictionVa
+ 			}
+ 		}
+ 		if (ndr_flags & NDR_BUFFERS) {
+-			int level = ndr_push_get_switch_value(ndr, r);
++			uint32_t level;
++			if (!NDR_ERR_CODE_IS_SUCCESS(ndr_push_steal_switch_value(ndr, r, &level)))
++				level = 0;
+ 			switch (level) {
+ 				case 0x0:
+ 				break;
+@@ -2187,9 +2193,10 @@ enum ndr_err_code ndr_push_RestrictionVa
+ 
+ enum ndr_err_code  ndr_pull_RestrictionVariable(struct ndr_pull *ndr, int ndr_flags, union RestrictionVariable *r)
+ {
+-	int level;
++	uint32_t level;
+ 	TALLOC_CTX *_mem_save_res_0;
+-	level = ndr_pull_get_switch_value(ndr, r);
++	if (!NDR_ERR_CODE_IS_SUCCESS(ndr_pull_steal_switch_value(ndr, r, &level)))
++		level = 0;
+ 	{
+ 		uint32_t _flags_save_STRUCT = ndr->flags;
+ 		ndr_set_flags(&ndr->flags, LIBNDR_FLAG_NOALIGN);
+@@ -2237,8 +2244,8 @@ enum ndr_err_code  ndr_pull_RestrictionV
+ 
+ _PUBLIC_ void ndr_print_RestrictionVariable(struct ndr_print *ndr, const char *name, const union RestrictionVariable *r)
+ {
+-	int level;
+-	level = ndr_print_get_switch_value(ndr, r);
++	uint32_t level;
++	level = ndr_print_steal_switch_value(ndr, r);
+ 	ndr_print_union(ndr, name, level, "RestrictionVariable");
+ 	switch (level) {
+ 		case 0x0:
