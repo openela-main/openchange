@@ -1,0 +1,15 @@
+diff -up openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c.samba-4.22 openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c
+--- openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c.samba-4.22	2025-06-11 10:13:16.263459657 +0200
++++ openchange-openchange-2.3-VULCAN/libmapiadmin/mapiadmin_user.c	2025-06-11 10:13:20.049851970 +0200
+@@ -332,7 +332,11 @@ static enum MAPISTATUS mapiadmin_samr_co
+ 	if (!NT_STATUS_IS_OK(status)) {
+ 		const char *errstr = nt_errstr(status);
+ 		if (NT_STATUS_EQUAL(status, NT_STATUS_NET_WRITE_FAULT)) {
++			#ifdef SOURCE4_LIBRPC_INTERNALS
+ 			errstr = dcerpc_errstr(mapiadmin_ctx->user_ctx, mapiadmin_ctx->user_ctx->p->last_fault_code);
++			#else
++			errstr = dcerpc_errstr(mapiadmin_ctx->user_ctx, mapiadmin_ctx->user_ctx->p->internal.last_fault_code);
++			#endif
+ 		}
+ 		OC_DEBUG(3, "samr_Connect failed - %s", errstr);
+ 		return MAPI_E_CALL_FAILED;

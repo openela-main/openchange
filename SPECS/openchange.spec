@@ -23,7 +23,7 @@
 
 Name: openchange
 Version: 2.3
-Release: 43%{?dist}
+Release: 44%{?dist}
 Summary: Provides access to Microsoft Exchange servers using native protocols
 License: GPLv3+ and Public Domain
 URL: http://www.openchange.org/
@@ -102,6 +102,7 @@ Patch19: openchange-2.3-disable-server-reqs.patch
 %endif
 Patch20: openchange-2.3-samba-4.15.patch
 Patch21: openchange-2.3-samba-4.20.patch
+Patch22: openchange-2.3-samba-4.22.patch
 
 %description
 OpenChange provides libraries to access Microsoft Exchange servers
@@ -157,31 +158,32 @@ This package provides the server elements for OpenChange.
 
 %prep
 %setup -q -n openchange-%{name}-%{version}-%{nickname}
-%patch0 -p1 -b .libmapi-conflict
-%patch1 -p1 -b .generate-xml-doc
-%patch2 -p1 -b .OC_RULE_ADD-fix
-%patch4 -p1 -b .symbol-clash
-%patch5 -p1 -b .samba-4.2.0-rc2
-%patch6 -p1 -b .disable-server-tools-build
-%patch7 -p1 -b .samba-4.4
-%patch8 -p1 -b .fix-connection-args
-%patch9 -p1 -b .no-yyunput
-%patch10 -p1 -b .libical-3.0
-%patch11 -p1 -b .disable-mysql
-%patch12 -p1 -b .switch-to-python3
+%patch -P 0 -p1 -b .libmapi-conflict
+%patch -P 1 -p1 -b .generate-xml-doc
+%patch -P 2 -p1 -b .OC_RULE_ADD-fix
+%patch -P 4 -p1 -b .symbol-clash
+%patch -P 5 -p1 -b .samba-4.2.0-rc2
+%patch -P 6 -p1 -b .disable-server-tools-build
+%patch -P 7 -p1 -b .samba-4.4
+%patch -P 8 -p1 -b .fix-connection-args
+%patch -P 9 -p1 -b .no-yyunput
+%patch -P 10 -p1 -b .libical-3.0
+%patch -P 11 -p1 -b .disable-mysql
+%patch -P 12 -p1 -b .switch-to-python3
 %if !%{build_python_package}
-%patch13 -p1 -b .disable-python3
+%patch -P 13 -p1 -b .disable-python3
 %endif
-%patch14 -p1 -b .covscan
-%patch15 -p1 -b .samba-4.10-macros
-%patch16 -p1 -b .samba-4.11
-%patch17 -p1 -b .samba-4.12
-%patch18 -p1 -b .samba-4.13
+%patch -P 14 -p1 -b .covscan
+%patch -P 15 -p1 -b .samba-4.10-macros
+%patch -P 16 -p1 -b .samba-4.11
+%patch -P 17 -p1 -b .samba-4.12
+%patch -P 18 -p1 -b .samba-4.13
 %if !%{build_server_package}
-%patch19 -p1 -b .disable-server-reqs
+%patch -P 19 -p1 -b .disable-server-reqs
 %endif
-%patch20 -p1 -b .samba-4.15
-%patch21 -p1 -b .samba-4.20
+%patch -P 20 -p1 -b .samba-4.15
+%patch -P 21 -p1 -b .samba-4.20
+%patch -P 22 -p1 -b .samba-4.22
 
 %build
 ./autogen.sh
@@ -326,6 +328,9 @@ cp -r apidocs/html/libmapi++/* $RPM_BUILD_ROOT%{_datadir}/devhelp/books/openchan
 %endif
 
 %changelog
+* Wed Jun 11 2025 Milan Crha <mcrha@redhat.com> - 2.3-44
+- Related: RHEL-89873 (Rebuild against samba 4.22)
+
 * Fri Oct 04 2024 Milan Crha <mcrha@redhat.com> - 2.3-43
 - Related: RHEL-59788 (Rebuild against samba 4.21)
 
