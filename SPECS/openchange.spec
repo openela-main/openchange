@@ -23,7 +23,7 @@
 
 Name: openchange
 Version: 2.3
-Release: 44%{?dist}
+Release: 45%{?dist}
 Summary: Provides access to Microsoft Exchange servers using native protocols
 License: GPLv3+ and Public Domain
 URL: http://www.openchange.org/
@@ -328,6 +328,9 @@ cp -r apidocs/html/libmapi++/* $RPM_BUILD_ROOT%{_datadir}/devhelp/books/openchan
 %endif
 
 %changelog
+* Mon Sep 15 2025 Milan Crha <mcrha@redhat.com> - 2.3-45
+- Related: RHEL-114548 (Rebuild against samba 4.23)
+
 * Wed Jun 11 2025 Milan Crha <mcrha@redhat.com> - 2.3-44
 - Related: RHEL-89873 (Rebuild against samba 4.22)
 
